@@ -28,7 +28,7 @@
                     (setf *self* actor)
                     (funcall function)))))
     (setf (actor-thread actor) thread) ;; a bit circular!
-    (make-actor :thread thread :mailbox mailbox :name name)))
+    actor))
 
 (defun join (actor)
   "Wait for an actor to terminate."
