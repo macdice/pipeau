@@ -31,8 +31,7 @@
                          (progn (write-string (maybe-consume-trigraph line (1+ pos)) out)
                                 (replace-impl out (+ pos 3)))
                          (progn (write-char ch out)
-                                (replace-impl out (1+ pos)))))                   )
-               ))
+                                (replace-impl out (1+ pos))))))))
       (with-output-to-string (out) (replace-impl out 0)))))
 
 (defun preprocess (path target)
