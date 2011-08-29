@@ -8,6 +8,7 @@
 ;; - exceptions etc ...
 
 (in-package :pipeau)
+(require :sb-concurrency)
 
 (defstruct actor
   "An actor representing and mailbox and a thread."
