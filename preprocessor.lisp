@@ -23,11 +23,12 @@
 
 (defun replace-trigraphs (line)
   "Return line with all trigraphs converted to their standard character replacements."
-  (let ((max-pos (length line)))
+  (let* ((max-pos (length line))
+         (tri-break (- max-pos 2))) ; Where to quit looking for trigraphs in a line.
     (labels ((replace-impl (out pos)
                (if (< pos max-pos)
                    (let ((ch (schar line pos)))
-                     (if (and (< pos (- max-pos 2)) (char= #\? ch))
+                     (if (and (< pos tri-break) (char= #\? ch))
                          (progn (write-string (maybe-consume-trigraph line (1+ pos)) out)
                                 (replace-impl out (+ pos 3)))
                          (progn (write-char ch out)
