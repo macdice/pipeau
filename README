@@ -1,4 +1,9 @@
-Some random experiments with multi-threaded programming in SBCL.
-There is nothing here yet!
+Some random experiments with multi-threaded programming in Common
+Lisp.
+
+The general plan is to produce an actor model system in the style of
+Termite Scheme, in Common Lisp, targetting at least SBCL and ABCL.
+
+Status: early hacking
 
 Thomas Munro <munro@ip9.org>
