@@ -22,7 +22,7 @@
                       (unwind-protect
                            (funcall function)
                         (loop for link in (process-links (self))
-                             do (! link `(EXIT ,(self)))))))
+                             do (mailbox-send `(EXIT ,(self)) link)))))
                   :name name)))
     (setf (process-thread process) thread) ;; a bit circular!
     process))
@@ -42,7 +42,11 @@ rather than getting an error."
 
 (defun ? (&optional timeout default)
   "Receive a message from one's own mailbox."
-  (mailbox-receive-if (process-mailbox *self*) (lambda (x) t) timeout default))
+  (mailbox-receive-if 
+   (process-mailbox *self*)
+   (lambda (x) (declare (ignorable x)) t) 
+   timeout 
+   default))
 
 (defun ! (process message)
   "Send a message to a process."
