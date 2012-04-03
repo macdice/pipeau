@@ -11,4 +11,5 @@
   :components ((:file "package")
                (:file "process")
                (:file "mailbox")
-               (:file "match")))
+               (:file "match"))
+  :depends-on (:bordeaux-threads))
