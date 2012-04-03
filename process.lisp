@@ -38,7 +38,7 @@
 (defun trap-exits (&optional (active t))
   "Register to receive exit messages from linked processes explicitly,
 rather than getting an error."
-  (setf (process-trap-exits active)))
+  (setf (process-trap-exits (self)) active))
 
 (defun ? (&optional timeout default)
   "Receive a message from one's own mailbox."
