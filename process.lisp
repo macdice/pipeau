@@ -6,11 +6,16 @@
   (:thread)
   (:mailbox)
   (:links)
-  (:trap-exits))
+  (:trap-exit)
+  (:lock (bordeaux-threads:make-lock)))
 
 (defparameter *self* (make-process :name "main" 
                                    :mailbox (make-mailbox))
   "A special variable holding the current process.")
+
+(defun self ()
+  "Return the current process."
+  *self*)
 
 (defun spawn (function &optional name)
   "Spawn a new process."
@@ -21,24 +26,35 @@
                     (let ((*self* process)) ;; thread-local rebind of special
                       (unwind-protect
                            (funcall function)
+                        ;; TODO lock
                         (loop for link in (process-links (self))
                              do (mailbox-send `(EXIT ,(self)) link)))))
                   :name name)))
     (setf (process-thread process) thread) ;; a bit circular!
     process))
 
+(defun link (process)
+  "Create a bidirectional link between the calling process and the
+named process."
+  (bordeaux-threads:with-lock-held ((process-lock (self)))
+    (pushnew process (process-links (self))))
+  (bordeaux-threads:with-lock-held ((process-lock process))
+    (pushnew (self) (process-links process))))
+
+(defun spawn-link (function &optional name)
+  "Spawn a new process linked to the calling process."
+  (let ((process (spawn function name)))
+    (link process)
+    process))
+
 (defun join (process)
   "Wait for a process to terminate."
   (bordeaux-threads:join-thread (process-thread process)))
 
-(defun self ()
-  "Return the current process."
-  *self*)
-
-(defun trap-exits (&optional (active t))
+(defun trap-exit (&optional (active t))
   "Register to receive exit messages from linked processes explicitly,
 rather than getting an error."
-  (setf (process-trap-exits (self)) active))
+  (setf (process-trap-exit (self)) active))
 
 (defun ? (&optional timeout default)
   "Receive a message from one's own mailbox."
