@@ -26,13 +26,10 @@
                     (let ((*self* process)) ;; thread-local rebind of special
                       (unwind-protect
                            (funcall function)
-                        ;; TODO lock
-                        (loop for link in (process-links (self))
-                             do (mailbox-send `(EXIT ,(self)) link)))))
+                        (bordeaux-threads:with-lock-held ((process-lock (self)))
+                          (loop for link in (process-links (self))
+                             do (mailbox-send `(EXIT ,(self)) link))))))
                   :name name)))
-    ;; TODO does the following break rules about visibility?
-    ;; who is supposed to see this value?  noone else should
-    ;; update it and it will only ever be used to join
     (setf (process-thread process) thread)
     process))
 
