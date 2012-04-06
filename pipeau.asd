@@ -9,7 +9,7 @@
   :description "New experiments in concurrent programming."
   :serial t
   :components ((:file "package")
-               (:file "process")
                (:file "mailbox")
+               (:file "process")
                (:file "match"))
   :depends-on (:bordeaux-threads))
