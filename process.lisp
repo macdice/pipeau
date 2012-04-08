@@ -67,3 +67,10 @@ rather than getting an error."
 (defun ! (process message)
   "Send a message to a process."
   (mailbox-send message (process-mailbox process)))
+
+(defmacro receive (&body body)
+  "Receive a message, and dispatch using pattern matching."
+  ;; TODO in future this may allow objects to be received out of
+  ;; sequence; but for now it's a simple fetch-and-match
+  `(match (?)
+     ,@body))))
