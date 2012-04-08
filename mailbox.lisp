@@ -63,6 +63,13 @@ non-matching objects, leaving them in the mailbox."
   ;; somehow keep a cursor pointing to the bit we've reached and start
   ;; from there next time round the loop
 
+  ;; TODO the point of having a receive-if that leaves objects in the
+  ;; queue (ie allows things to be received out of sequence) is to
+  ;; allow for the 'tags' of Termite Scheme, a way to do RPC, and also
+  ;; to handle higher priority messages sooner than queued up lower
+  ;; priority ones; but that functionality isn't being provided in any
+  ;; useful way just yet!
+
   (bordeaux-threads:with-lock-held ((mailbox-lock mailbox))
     (loop do
          (let ((value (mailbox-try-receive-if mailbox predicate '%not-found)))
