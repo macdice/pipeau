@@ -10,6 +10,6 @@
   :serial t
   :components ((:file "package")
                (:file "mailbox")
-               (:file "process")
-               (:file "match"))
-  :depends-on (:bordeaux-threads))
+               (:file "match")
+               (:file "process"))
+   :depends-on (:bordeaux-threads))
