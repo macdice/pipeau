@@ -1,3 +1,3 @@
 (defpackage :pipeau
   (:use :common-lisp)
-  (:export ! ? self spawn))
+  (:export ! ? self spawn match receive))
