@@ -28,7 +28,6 @@
 ;;; TODO - support equality testing, when a name is used more than once?
 ;;; TODO - support regex patterns for matching/decomposing strings
 ;;; TODO - support arbitrary predicates (like the 'if' in Erlang and Scala)
-;;; TODO - support symbols with name "_" from any package as wildcard?
 ;;; TODO - think harder about how to chop up the EVAL-WHEN
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -124,7 +123,7 @@
            (append (match-find-names (car pattern))
                    (match-find-names (cdr pattern))))
           ((symbolp pattern)
-           (if (eq pattern '_)
+           (if (string= (symbol-name pattern) "_")
                nil
                (list pattern)))
           (t nil)))
