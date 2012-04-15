@@ -75,7 +75,7 @@ non-matching objects, leaving them in the mailbox."
          (let ((value (mailbox-try-receive-if mailbox predicate '%not-found)))
            (cond ((not (eq value '%not-found))
                   (return value))
-                 ((and (numberp timeout) (zerop timeout))
+                 ((and timeout (zerop timeout))
                   (return timeout-value))
                  (t
                   (bordeaux-threads:condition-wait (mailbox-condition-variable mailbox)
