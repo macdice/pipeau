@@ -2,8 +2,11 @@
 
 (defstruct process
   "A record type for processes."
+  ;; TODO is the polymorphism here telling me that I need to use
+  ;; classes instead of structs?
   (:name)
-  (:thread)
+  (:thread) ;; applies to native threads
+  (:handler) ;; applies to green processes
   (:mailbox)
   (:links)
   (:trap-exit)
@@ -17,7 +20,7 @@
   "Return the current process."
   *self*)
 
-(defun spawn (function &optional name)
+(defun spawn (function &key name)
   "Spawn a new process."
   (let* ((mailbox (make-mailbox :name name))
          (process (make-process :mailbox mailbox :name name))
