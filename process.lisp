@@ -44,9 +44,9 @@ named process."
   (bordeaux-threads:with-lock-held ((process-lock process))
     (pushnew (self) (process-links process))))
 
-(defun spawn-link (function &optional name)
+(defun spawn-link (function &key name)
   "Spawn a new process linked to the calling process."
-  (let ((process (spawn function name)))
+  (let ((process (spawn function :name name)))
     (link process)
     process))
 
