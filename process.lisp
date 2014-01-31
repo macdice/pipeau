@@ -67,6 +67,10 @@ rather than getting an error."
    timeout 
    default))
 
+(defun ?? (predicate &optional timeout default)
+  "Receive the first message satisfying PREDICATE from one's own mailbox."
+  (mailbox-receive-if (process-mailbox *self*) predicate timeout default))
+
 (defun ! (process message)
   "Send a message to a process."
   (mailbox-send message (process-mailbox process)))
